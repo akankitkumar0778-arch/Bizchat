@@ -1,0 +1,1503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BizChat — Conversations that move business forward</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --blue: #1652F0;
+    --blue-dark: #0A38C0;
+    --blue-light: #EBF0FF;
+    --black: #0A0B0D;
+    --white: #FFFFFF;
+    --gray-100: #F5F7FA;
+    --gray-200: #E8ECF0;
+    --gray-500: #6B7280;
+    --gray-700: #374151;
+    --btc-orange: #F7931A;
+    --green: #05B169;
+    --nav-h: 64px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: linear-gradient(
+      to bottom,
+      #1a3a6b 0%,
+      #1e4a8a 8%,
+      #1a5fa8 18%,
+      #4a8fc4 32%,
+      #8bbdd8 48%,
+      #b8d4e8 62%,
+      #d6e8f4 75%,
+      #eaf3f9 86%,
+      #f4f8fb 93%,
+      #ffffff 100%
+    );
+    background-attachment: fixed;
+    color: var(--black);
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    height: var(--nav-h);
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--gray-200);
+    display: flex; align-items: center;
+    padding: 0 48px;
+    z-index: 100;
+    animation: slideDown 0.6s ease both;
+  }
+  @keyframes slideDown { from { transform: translateY(-100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+  .nav-logo {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 20px; font-weight: 700; color: var(--black);
+    text-decoration: none;
+  }
+  .nav-logo svg { width: 28px; height: 28px; }
+
+  .nav-links {
+    display: flex; gap: 32px; margin-left: 40px;
+    list-style: none;
+  }
+  .nav-links a {
+    font-size: 14px; font-weight: 500;
+    color: var(--gray-700); text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--blue); }
+
+  .nav-right {
+    margin-left: auto;
+    display: flex; align-items: center; gap: 16px;
+  }
+
+  .btn-ghost {
+    font-size: 14px; font-weight: 600;
+    color: var(--black); background: none; border: none;
+    cursor: pointer; padding: 8px 16px;
+    border-radius: 8px; transition: background 0.2s;
+    text-decoration: none;
+  }
+  .btn-ghost:hover { background: var(--gray-100); }
+
+  .btn-primary {
+    font-size: 14px; font-weight: 600;
+    color: var(--white); background: var(--blue);
+    border: none; cursor: pointer;
+    padding: 10px 20px; border-radius: 8px;
+    transition: background 0.2s, transform 0.15s;
+    text-decoration: none; display: inline-block;
+  }
+  .btn-primary:hover { background: var(--blue-dark); transform: translateY(-1px); }
+  .btn-primary:active { transform: translateY(0); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    padding-top: var(--nav-h);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-left: 48px; padding-right: 48px;
+    gap: 60px;
+  }
+
+  .hero-left { animation: fadeUp 0.8s 0.2s ease both; }
+  .hero-right { animation: fadeUp 0.8s 0.4s ease both; display: flex; justify-content: center; }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(32px); } to { opacity: 1; transform: translateY(0); } }
+
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--blue-light); color: var(--blue);
+    font-size: 13px; font-weight: 600;
+    padding: 6px 14px; border-radius: 100px;
+    margin-bottom: 24px;
+  }
+
+  h1 {
+    font-size: clamp(40px, 5vw, 60px);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    margin-bottom: 24px;
+    color: var(--black);
+  }
+
+  .hero-desc {
+    font-size: 18px;
+    line-height: 1.6;
+    color: var(--gray-500);
+    margin-bottom: 36px;
+    max-width: 480px;
+  }
+
+  .hero-ctas {
+    display: flex; align-items: center; gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .btn-hero {
+    font-size: 16px; font-weight: 600;
+    padding: 14px 32px; border-radius: 10px;
+    cursor: pointer; border: none;
+    transition: all 0.2s; text-decoration: none;
+    display: inline-block;
+  }
+  .btn-hero-primary { background: var(--blue); color: var(--white); }
+  .btn-hero-primary:hover { background: var(--blue-dark); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(22,82,240,0.35); }
+  .btn-hero-secondary { background: var(--gray-100); color: var(--black); }
+  .btn-hero-secondary:hover { background: var(--gray-200); }
+
+  .hero-trust {
+    margin-top: 36px;
+    display: flex; align-items: center; gap: 20px;
+    flex-wrap: wrap;
+  }
+  .trust-item {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 13px; font-weight: 500; color: var(--gray-500);
+  }
+  .trust-item svg { width: 16px; height: 16px; }
+
+  /* ═══════════════════════════════════════════════════════
+     PHONE SHOWCASE v3 — Premium animated UI display
+  ═══════════════════════════════════════════════════════ */
+
+  /* outer stage with perspective */
+  .phone-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    perspective: 1400px;
+    perspective-origin: 50% 40%;
+    padding: 30px 40px;
+  }
+
+  /* ── AMBIENT ORBS behind phone ── */
+  .phone-ambient {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: visible;
+  }
+  .amb-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(40px);
+    animation: orbDrift 8s ease-in-out infinite alternate;
+  }
+  .amb-orb-1 {
+    width: 260px; height: 260px;
+    background: radial-gradient(circle, rgba(91,80,240,0.22) 0%, transparent 70%);
+    top: 5%; left: -20%;
+    animation-delay: 0s;
+  }
+  .amb-orb-2 {
+    width: 200px; height: 200px;
+    background: radial-gradient(circle, rgba(124,58,237,0.18) 0%, transparent 70%);
+    bottom: 10%; right: -10%;
+    animation-delay: -3s;
+  }
+  .amb-orb-3 {
+    width: 150px; height: 150px;
+    background: radial-gradient(circle, rgba(22,82,240,0.15) 0%, transparent 70%);
+    top: 50%; left: 50%;
+    transform: translate(-50%,-50%);
+    animation-delay: -5s;
+  }
+  @keyframes orbDrift {
+    0%   { transform: translate(0,0) scale(1); }
+    33%  { transform: translate(15px,-20px) scale(1.1); }
+    66%  { transform: translate(-10px,15px) scale(0.92); }
+    100% { transform: translate(8px,-8px) scale(1.05); }
+  }
+
+  /* ── FLOATING NOTIFICATION BADGES ── */
+  .phone-notif {
+    position: absolute;
+    background: #fff;
+    border-radius: 14px;
+    padding: 8px 12px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.18), 0 2px 8px rgba(0,0,0,0.1);
+    display: flex; align-items: center; gap: 8px;
+    z-index: 10;
+    white-space: nowrap;
+    border: 1px solid rgba(255,255,255,0.8);
+    opacity: 0;
+    pointer-events: none;
+  }
+  .phone-notif.notif-1 {
+    top: 15%; right: -10px;
+    animation: notifFloat1 14s ease-in-out infinite;
+    animation-delay: 1.5s;
+  }
+  .phone-notif.notif-2 {
+    bottom: 28%; left: -18px;
+    animation: notifFloat2 16s ease-in-out infinite;
+    animation-delay: 5s;
+  }
+  .phone-notif.notif-3 {
+    bottom: 10%; right: -12px;
+    animation: notifFloat3 12s ease-in-out infinite;
+    animation-delay: 9s;
+  }
+  @keyframes notifFloat1 {
+    0%,10%   { opacity:0; transform:translateY(10px) scale(0.9); }
+    15%,45%  { opacity:1; transform:translateY(0) scale(1); }
+    55%,100% { opacity:0; transform:translateY(-8px) scale(0.95); }
+  }
+  @keyframes notifFloat2 {
+    0%,5%    { opacity:0; transform:translateY(10px) scale(0.9); }
+    10%,42%  { opacity:1; transform:translateY(0) scale(1); }
+    52%,100% { opacity:0; transform:translateY(-8px) scale(0.95); }
+  }
+  @keyframes notifFloat3 {
+    0%,15%   { opacity:0; transform:translateY(10px) scale(0.9); }
+    20%,48%  { opacity:1; transform:translateY(0) scale(1); }
+    58%,100% { opacity:0; transform:translateY(-8px) scale(0.95); }
+  }
+  .notif-icon {
+    width: 28px; height: 28px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; flex-shrink: 0;
+  }
+  .notif-text { line-height: 1.3; }
+  .notif-title { font-size: 10px; font-weight: 700; color: #0f172a; }
+  .notif-sub   { font-size: 9px; color: #64748b; }
+
+  /* ── PHONE SHELL ── */
+  .phone-3d-wrapper {
+    position: relative;
+    transform-style: preserve-3d;
+    animation: phoneFloat3D 7s ease-in-out infinite;
+    filter: drop-shadow(0 40px 60px rgba(0,0,0,0.45)) drop-shadow(0 10px 20px rgba(91,80,240,0.2));
+  }
+  @keyframes phoneFloat3D {
+    0%,100% { transform: rotateY(-6deg) rotateX(3deg) translateY(0px); }
+    25%     { transform: rotateY(-4deg) rotateX(2deg) translateY(-10px); }
+    50%     { transform: rotateY(-7deg) rotateX(4deg) translateY(-18px); }
+    75%     { transform: rotateY(-3deg) rotateX(2deg) translateY(-8px); }
+  }
+
+  .bc-phone-boundary {
+    position: relative;
+    border-radius: 54px;
+    background: linear-gradient(160deg,
+      #3a3d4e 0%,
+      #252838 30%,
+      #1a1c28 60%,
+      #0e1018 100%
+    );
+    padding: 13px;
+    box-shadow:
+      inset 0 2px 0 rgba(255,255,255,0.12),
+      inset 0 -2px 0 rgba(0,0,0,0.6),
+      inset 2px 0 0 rgba(255,255,255,0.06),
+      inset -2px 0 0 rgba(0,0,0,0.3),
+      0 0 0 1px rgba(255,255,255,0.07),
+      0 0 0 2.5px rgba(0,0,0,0.5);
+  }
+  /* gloss sheen */
+  .bc-phone-boundary::before {
+    content: '';
+    position: absolute; inset: 0;
+    border-radius: 54px;
+    background: linear-gradient(145deg,
+      rgba(255,255,255,0.12) 0%,
+      rgba(255,255,255,0.04) 30%,
+      transparent 55%
+    );
+    pointer-events: none; z-index: 1;
+  }
+  /* edge metallic rim */
+  .bc-phone-boundary::after {
+    content: '';
+    position: absolute; inset: 0;
+    border-radius: 54px;
+    border: 1.5px solid rgba(255,255,255,0.08);
+    pointer-events: none; z-index: 1;
+  }
+
+  /* side buttons */
+  .bc-btn-l {
+    position: absolute; left: -4px; width: 4px;
+    background: linear-gradient(to left, #2e3142, #1e2030);
+    border-radius: 2px 0 0 2px;
+    box-shadow: -1px 0 4px rgba(0,0,0,0.4);
+  }
+  .bc-btn-r {
+    position: absolute; right: -4px; width: 4px;
+    background: linear-gradient(to right, #2e3142, #1e2030);
+    border-radius: 0 2px 2px 0;
+    box-shadow: 1px 0 4px rgba(0,0,0,0.4);
+  }
+
+  /* ground shadow */
+  .bc-phone-shadow {
+    position: absolute;
+    left: 8%; bottom: -28px;
+    width: 84%; height: 28px;
+    background: radial-gradient(ellipse, rgba(0,0,0,0.5) 0%, transparent 70%);
+    filter: blur(14px);
+  }
+
+  /* ── SCREEN GLASS ── */
+  .bc-phone {
+    width: 304px; height: 630px;
+    background: #f4f6fb;
+    border-radius: 43px;
+    overflow: hidden;
+    position: relative;
+    /* screen glass reflection */
+    box-shadow:
+      inset 0 0 0 1px rgba(255,255,255,0.06),
+      inset 0 20px 40px rgba(255,255,255,0.03);
+  }
+  /* glass reflection strip */
+  .bc-phone::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 10%; width: 40%; height: 60%;
+    background: linear-gradient(160deg, rgba(255,255,255,0.04) 0%, transparent 70%);
+    border-radius: 0 0 50% 50%;
+    pointer-events: none; z-index: 50;
+  }
+
+  /* ── DYNAMIC ISLAND ── */
+  .bc-island {
+    position: absolute; top: 12px; left: 50%;
+    transform: translateX(-50%);
+    width: 100px; height: 30px;
+    background: #000;
+    border-radius: 22px;
+    z-index: 40;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.9);
+    transition: all 0.5s cubic-bezier(0.34,1.2,0.64,1);
+  }
+  .bc-island.island-expand {
+    width: 180px;
+  }
+  .bc-island-camera {
+    width: 11px; height: 11px; border-radius: 50%;
+    background: #111;
+    box-shadow: inset 0 0 4px rgba(100,149,237,0.7), 0 0 6px rgba(100,149,237,0.4);
+    transition: box-shadow 0.3s;
+  }
+  .bc-island.island-expand .bc-island-camera {
+    box-shadow: inset 0 0 4px rgba(100,149,237,0.7), 0 0 10px rgba(100,220,100,0.5);
+  }
+  .bc-island-content {
+    flex: 1; display: none; align-items: center;
+    padding: 0 6px; gap: 5px; overflow: hidden;
+  }
+  .bc-island.island-expand .bc-island-content { display: flex; }
+  .island-app-icon {
+    width: 18px; height: 18px; border-radius: 5px;
+    background: linear-gradient(135deg,#7c3aed,#5b50f0);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 9px; font-weight: 800; color: #fff; flex-shrink: 0;
+  }
+  .island-text { font-size: 9px; font-weight: 600; color: #fff; white-space: nowrap; overflow: hidden; }
+  .bc-island-mic {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: #222;
+    box-shadow: inset 0 0 3px rgba(255,255,255,0.1);
+  }
+
+  /* ── SCREEN TRANSITIONS ── */
+  .bc-screen {
+    position: absolute; top: 0; left: 0;
+    width: 100%; height: 100%;
+    will-change: transform, opacity, filter;
+    font-family: 'Inter', -apple-system, sans-serif;
+  }
+  /* base hidden states */
+  .bc-screen.s-offright { transform: translateX(105%) scale(0.96); opacity: 0; z-index: 1; filter: blur(4px); pointer-events: none; }
+  .bc-screen.s-offleft  { transform: translateX(-105%) scale(0.96); opacity: 0; z-index: 1; filter: blur(4px); pointer-events: none; }
+  /* exit states */
+  .bc-screen.s-exit-l { transform: translateX(-40%) scale(0.92); opacity: 0; z-index: 1; filter: blur(6px); }
+  .bc-screen.s-exit-r { transform: translateX(40%) scale(0.92); opacity: 0; z-index: 1; filter: blur(6px); }
+  /* active */
+  .bc-screen.s-active {
+    transform: translateX(0) scale(1);
+    opacity: 1; z-index: 2; filter: blur(0);
+  }
+  /* shared smooth transition */
+  .bc-screen.s-transition {
+    transition: transform 0.6s cubic-bezier(0.25,0.46,0.45,0.94),
+                opacity 0.6s ease,
+                filter 0.6s ease;
+  }
+
+  /* ── STATUS BAR ── */
+  .bc-statusbar {
+    position: absolute; top: 0; left: 0; right: 0; z-index: 35;
+    height: 50px;
+    padding: 14px 20px 0;
+    display: flex; align-items: center; justify-content: space-between;
+    background: transparent;
+    pointer-events: none;
+  }
+  .bc-statusbar-time { font-size: 11px; font-weight: 700; color: #0f172a; letter-spacing: -0.3px; }
+  .bc-statusbar-icons { display: flex; align-items: center; gap: 4px; }
+  .sb-icon { font-size: 9px; color: #0f172a; font-weight: 700; }
+
+  /* ─────────────────────────────────────
+     SCREEN 1: CONTACT LIST
+  ───────────────────────────────────── */
+  .bcs-list { background: #f4f6fb; display: flex; flex-direction: column; height: 100%; }
+
+  .bcs-list-hdr {
+    background: rgba(255,255,255,0.97);
+    backdrop-filter: blur(12px);
+    padding: 52px 14px 10px;
+    border-bottom: 1px solid #e2e8f0;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .bcs-logo-row { display: flex; align-items: center; gap: 7px; }
+  .bcs-logo-dot {
+    width: 30px; height: 30px;
+    background: linear-gradient(135deg,#7c3aed,#5b50f0);
+    border-radius: 9px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 800; color: #fff;
+    box-shadow: 0 3px 12px rgba(91,80,240,0.45);
+  }
+  .bcs-logo-name { font-size: 14px; font-weight: 700; color: #0f172a; }
+  .bcs-logo-sub  { font-size: 9px; color: #64748b; font-weight: 500; }
+  .bcs-hdr-bell {
+    width: 28px; height: 28px; border-radius: 8px;
+    background: #f4f6fb; border: 1px solid #e2e8f0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; position: relative;
+  }
+  .bcs-bell-dot {
+    position: absolute; top: 4px; right: 4px;
+    width: 7px; height: 7px; border-radius: 50%;
+    background: #dc2626; border: 1.5px solid #fff;
+    animation: bellPulse 2s ease-in-out infinite;
+  }
+  @keyframes bellPulse { 0%,100%{ box-shadow:0 0 0 0 rgba(220,38,38,0.4); } 50%{ box-shadow:0 0 0 4px rgba(220,38,38,0); } }
+
+  .bcs-stats {
+    display: flex; gap: 0;
+    background: #fff; margin: 10px 10px 0;
+    border-radius: 14px; border: 1px solid #e2e8f0;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+  .bcs-stat { flex: 1; padding: 10px 4px; text-align: center; position: relative; }
+  .bcs-stat:not(:last-child)::after {
+    content: ''; position: absolute; right: 0; top: 20%; height: 60%;
+    width: 1px; background: #e2e8f0;
+  }
+  .bcs-stat-n { font-size: 18px; font-weight: 800; line-height: 1; }
+  .bcs-stat-n.red    { color: #dc2626; }
+  .bcs-stat-n.orange { color: #ea580c; }
+  .bcs-stat-n.purple { color: #5b50f0; }
+  .bcs-stat-l { font-size: 9px; color: #94a3b8; font-weight: 500; margin-top: 2px; }
+
+  .bcs-search {
+    margin: 10px 10px 8px;
+    background: #fff; border: 1.5px solid #e2e8f0;
+    border-radius: 50px; padding: 7px 12px;
+    display: flex; align-items: center; gap: 7px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  }
+  .bcs-search-icon { font-size: 11px; color: #94a3b8; }
+  .bcs-search-txt  { font-size: 11px; color: #94a3b8; }
+
+  /* animated search cursor */
+  .bcs-search-cursor {
+    width: 1px; height: 12px; background: #5b50f0;
+    animation: cursorBlink 1s step-end infinite;
+    display: inline-block; margin-left: 1px;
+  }
+  @keyframes cursorBlink { 0%,100%{ opacity:1; } 50%{ opacity:0; } }
+
+  .bcs-contacts { padding: 4px 10px 10px; display: flex; flex-direction: column; gap: 5px; overflow: hidden; }
+  .bcs-sect { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #94a3b8; padding: 4px 2px; }
+
+  .bcs-card {
+    display: flex; align-items: center; gap: 9px;
+    padding: 10px 11px; background: #fff;
+    border-radius: 12px; border: 1px solid transparent;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    opacity: 0; transform: translateX(-16px);
+    transition: opacity 0.4s ease, transform 0.4s ease, border-color 0.2s, box-shadow 0.2s;
+  }
+  .bcs-card.card-visible { opacity: 1; transform: translateX(0); }
+  .bcs-card.bcs-card-active {
+    border-color: #5b50f0;
+    background: linear-gradient(to right, #f0eeff, #fafafe);
+    box-shadow: 0 3px 12px rgba(91,80,240,0.18);
+  }
+  .bcs-av {
+    width: 38px; height: 38px; border-radius: 11px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 13px; color: #fff; flex-shrink: 0;
+  }
+  .bcs-card-body { flex: 1; min-width: 0; }
+  .bcs-card-top  { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+  .bcs-card-name { font-size: 12px; font-weight: 600; color: #0f172a; }
+  .bcs-card-time { font-size: 9px; color: #94a3b8; }
+  .bcs-card-tags { display: flex; gap: 4px; }
+  .bcs-otag { font-size: 9px; font-weight: 600; padding: 2px 6px; border-radius: 4px; }
+  .bcs-otag.pending { background: #fff7ed; color: #ea580c; }
+  .bcs-otag.paid    { background: #f0fdf4; color: #16a34a; }
+  .bcs-otag.overdue { background: #fef2f2; color: #dc2626; }
+  .bcs-otag.new     { background: #eff6ff; color: #2563eb; }
+  .bcs-ubadge {
+    background: linear-gradient(135deg,#7c3aed,#5b50f0);
+    color: #fff; font-size: 9px; font-weight: 700;
+    padding: 1px 5px; border-radius: 8px;
+    animation: badgePop 2.5s ease-in-out infinite;
+  }
+  @keyframes badgePop { 0%,100%{ transform:scale(1); } 50%{ transform:scale(1.12); } }
+
+  /* nav bar */
+  .bcs-nav-bar {
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(12px);
+    border-top: 1px solid #e2e8f0;
+    padding: 8px 0 4px;
+    display: flex;
+    margin-top: auto;
+  }
+  .bcs-nav-item {
+    flex: 1; display: flex; flex-direction: column; align-items: center;
+    gap: 3px; font-size: 9px; font-weight: 500; color: #94a3b8;
+  }
+  .bcs-nav-item.active { color: #5b50f0; }
+  .bcs-nav-icon { font-size: 16px; }
+  .bcs-nav-dot {
+    width: 4px; height: 4px; border-radius: 50%;
+    background: #5b50f0;
+  }
+
+  /* ─────────────────────────────────────
+     SCREEN 2: CHAT VIEW
+  ───────────────────────────────────── */
+  .bcs-chat-screen { background: #eef0f8; display: flex; flex-direction: column; height: 100%; }
+
+  .bcs-chat-hdr {
+    background: rgba(255,255,255,0.97); backdrop-filter: blur(12px);
+    padding: 52px 12px 10px;
+    border-bottom: 1px solid #e2e8f0;
+    display: flex; align-items: center; gap: 9px;
+  }
+  .bcs-back { font-size: 18px; color: #5b50f0; font-weight: 700; margin-right: 0; line-height: 1; }
+  .bcs-chat-av {
+    width: 34px; height: 34px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 13px; color: #fff;
+    background: linear-gradient(135deg,#f59e0b,#d97706);
+    flex-shrink: 0;
+    box-shadow: 0 2px 8px rgba(245,158,11,0.4);
+    position: relative;
+  }
+  .bcs-av-online {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: #22c55e; border: 2px solid #fff;
+    position: absolute; bottom: -1px; right: -1px;
+  }
+  .bcs-chat-name-block { flex: 1; }
+  .bcs-chat-cname { font-size: 13px; font-weight: 700; color: #0f172a; }
+  .bcs-chat-csub  { font-size: 9.5px; color: #22c55e; font-weight: 600; }
+  .bcs-hdr-actions { display: flex; gap: 6px; }
+  .bcs-hdr-btn {
+    width: 28px; height: 28px; border-radius: 8px;
+    background: #f4f6fb; border: 1px solid #e2e8f0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px;
+  }
+
+  .bcs-order-bar {
+    background: linear-gradient(135deg, #fff7ed 0%, #fff 100%);
+    margin: 8px 10px;
+    border-radius: 12px; padding: 9px 12px;
+    border: 1px solid rgba(234,88,12,0.15);
+    display: flex; align-items: center; justify-content: space-between;
+    box-shadow: 0 2px 8px rgba(234,88,12,0.08);
+    position: relative; overflow: hidden;
+  }
+  .bcs-order-bar::before {
+    content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+    width: 3px; background: linear-gradient(to bottom, #ea580c, #f59e0b);
+  }
+  .bcs-ob-left { font-size: 9.5px; color: #64748b; }
+  .bcs-ob-id   { font-size: 11px; font-weight: 700; color: #0f172a; margin-top: 1px; }
+  .bcs-ob-tag  { font-size: 9px; font-weight: 700; padding: 2px 8px; border-radius: 5px; background: #fff7ed; color: #ea580c; border: 1px solid rgba(234,88,12,0.2); }
+  .bcs-ob-amt  { font-size: 14px; font-weight: 800; color: #0f172a; }
+  .bcs-ob-amt-lbl { font-size: 9px; color: #94a3b8; text-align: right; }
+
+  /* chat messages */
+  .bcs-msgs { flex: 1; padding: 8px 10px; display: flex; flex-direction: column; gap: 7px; overflow: hidden; }
+
+  .bcs-sys-msg {
+    text-align: center; font-size: 9px; color: #94a3b8; font-weight: 500;
+    background: rgba(255,255,255,0.7); padding: 3px 10px; border-radius: 8px;
+    align-self: center; opacity: 0; transition: opacity 0.4s;
+  }
+  .bcs-sys-msg.show { opacity: 1; }
+
+  .bcs-msg {
+    max-width: 80%; padding: 9px 12px; border-radius: 16px;
+    font-size: 11px; line-height: 1.5;
+    opacity: 0; transform: translateY(14px) scale(0.96);
+    transition: all 0.5s cubic-bezier(0.34,1.2,0.64,1);
+  }
+  .bcs-msg.show { opacity: 1; transform: translateY(0) scale(1); }
+  .bcs-msg.out {
+    background: linear-gradient(135deg,#7c3aed,#5b50f0);
+    color: #fff; align-self: flex-end;
+    border-bottom-right-radius: 4px;
+    box-shadow: 0 4px 14px rgba(91,80,240,0.35);
+  }
+  .bcs-msg.in  {
+    background: #fff; color: #0f172a; align-self: flex-start;
+    border-bottom-left-radius: 4px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .bcs-msg-tick { font-size: 9px; opacity: 0.7; margin-left: 4px; }
+
+  .bcs-typing-row {
+    display: flex; gap: 4px; align-self: flex-start;
+    padding: 9px 14px; background: #fff;
+    border-radius: 16px; border-bottom-left-radius: 4px;
+    opacity: 0; transition: opacity 0.35s;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .bcs-typing-row.show { opacity: 1; }
+  .bcs-tdot {
+    width: 5px; height: 5px; background: #cbd5e1;
+    border-radius: 50%; animation: tdotBounce 1.4s ease-in-out infinite;
+  }
+  .bcs-tdot:nth-child(2) { animation-delay: 0.2s; }
+  .bcs-tdot:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes tdotBounce { 0%,60%,100%{ transform:translateY(0); } 30%{ transform:translateY(-5px); } }
+
+  .bcs-ai-chip {
+    align-self: flex-start; opacity: 0; transition: opacity 0.5s, transform 0.5s;
+    transform: translateY(6px);
+    font-size: 9.5px; color: #5b50f0; background: linear-gradient(135deg,#f0eeff,#eeecff);
+    padding: 4px 10px; border-radius: 8px; font-weight: 600;
+    display: flex; align-items: center; gap: 5px;
+    border: 1px solid rgba(91,80,240,0.15);
+    box-shadow: 0 2px 8px rgba(91,80,240,0.1);
+  }
+  .bcs-ai-chip.show { opacity: 1; transform: translateY(0); }
+  .ai-spark { animation: sparkSpin 2s linear infinite; display: inline-block; }
+  @keyframes sparkSpin { from{ transform:rotate(0deg); } to{ transform:rotate(360deg); } }
+
+  .bcs-input-row {
+    background: rgba(255,255,255,0.97); backdrop-filter: blur(8px);
+    border-top: 1px solid #e2e8f0;
+    padding: 8px 10px; display: flex; align-items: center; gap: 8px;
+  }
+  .bcs-input-box {
+    flex: 1; background: #f4f6fb; border: 1.5px solid #e2e8f0;
+    border-radius: 22px; padding: 7px 14px;
+    font-size: 11px; color: #94a3b8;
+    display: flex; align-items: center; gap: 4px;
+  }
+  .bcs-input-typing { color: #0f172a; }
+  .bcs-send-btn {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: linear-gradient(135deg,#7c3aed,#5b50f0);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; flex-shrink: 0;
+    box-shadow: 0 3px 10px rgba(91,80,240,0.45);
+    transition: transform 0.2s;
+  }
+  .bcs-send-btn.sending { animation: sendPop 0.35s ease; }
+  @keyframes sendPop { 0%{ transform:scale(1); } 50%{ transform:scale(0.85); } 100%{ transform:scale(1); } }
+
+  /* ─────────────────────────────────────
+     SCREEN 3: PAYMENT REMINDERS
+  ───────────────────────────────────── */
+  .bcs-remind-screen { background: #f4f6fb; display: flex; flex-direction: column; height: 100%; }
+
+  .bcs-remind-hdr {
+    background: rgba(255,255,255,0.97); backdrop-filter: blur(12px);
+    padding: 52px 14px 12px;
+    border-bottom: 1px solid #e2e8f0;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .bcs-remind-title { font-size: 15px; font-weight: 800; color: #0f172a; }
+  .bcs-remind-badge {
+    font-size: 9px; font-weight: 700; padding: 3px 9px;
+    background: linear-gradient(135deg,#7c3aed,#5b50f0); color: #fff;
+    border-radius: 10px; box-shadow: 0 2px 8px rgba(91,80,240,0.3);
+  }
+
+  .bcs-auto-row {
+    background: linear-gradient(135deg,#eeecff,#f0eeff);
+    margin: 8px 10px;
+    border-radius: 10px; padding: 8px 12px;
+    display: flex; align-items: center; justify-content: space-between;
+    border: 1px solid rgba(91,80,240,0.12);
+    opacity: 0; transform: translateY(-8px); transition: all 0.4s ease;
+  }
+  .bcs-auto-row.show { opacity: 1; transform: translateY(0); }
+  .bcs-auto-label { font-size: 10px; font-weight: 600; color: #5b50f0; }
+  .bcs-auto-sub   { font-size: 9px; color: #7c6ef0; }
+  /* toggle */
+  .bcs-toggle {
+    width: 30px; height: 17px; background: #5b50f0; border-radius: 9px;
+    position: relative; flex-shrink: 0;
+  }
+  .bcs-toggle::after {
+    content: ''; position: absolute; top: 2px; right: 2px;
+    width: 13px; height: 13px; border-radius: 50%; background: #fff;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+  }
+
+  .bcs-remind-body { flex: 1; padding: 6px 10px 10px; display: flex; flex-direction: column; gap: 8px; overflow: hidden; }
+
+  .bcs-rcard {
+    background: #fff; border-radius: 13px; padding: 11px 13px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    opacity: 0; transform: translateY(16px) scale(0.97);
+    transition: opacity 0.5s cubic-bezier(0.34,1.2,0.64,1),
+                transform 0.5s cubic-bezier(0.34,1.2,0.64,1);
+  }
+  .bcs-rcard.show { opacity: 1; transform: translateY(0) scale(1); }
+  .bcs-rc-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 5px; }
+  .bcs-rc-name { font-size: 12px; font-weight: 700; color: #0f172a; }
+  .bcs-rc-sub  { font-size: 9.5px; color: #64748b; margin-top: 1px; }
+  .bcs-rc-badge { font-size: 9px; font-weight: 700; padding: 2px 7px; border-radius: 5px; }
+  .bcs-rc-badge.urgent { background: #fef2f2; color: #dc2626; }
+  .bcs-rc-badge.warn   { background: #fff7ed; color: #ea580c; }
+  .bcs-rc-badge.ok     { background: #f0fdf4; color: #16a34a; }
+  .bcs-rc-detail { font-size: 9.5px; color: #64748b; margin-bottom: 7px; display: flex; align-items: center; gap: 5px; }
+  .bcs-replied { color: #16a34a; font-weight: 600; }
+  .bcs-noreply { color: #ea580c; font-weight: 600; }
+  .bcs-rc-prog { height: 5px; background: #f1f5f9; border-radius: 5px; overflow: hidden; margin-bottom: 8px; }
+  .bcs-rc-prog-fill {
+    height: 100%; border-radius: 5px;
+    width: 0; transition: width 1.2s cubic-bezier(0.4,0,0.2,1) 0.3s;
+  }
+  .bcs-rcard.show .bcs-rc-prog-fill { width: var(--prog-w); }
+  .bcs-rc-actions { display: flex; gap: 5px; }
+  .bcs-rc-btn {
+    flex: 1; font-size: 9.5px; font-weight: 600;
+    padding: 5px; border-radius: 7px; text-align: center; cursor: pointer;
+    transition: transform 0.15s;
+  }
+  .bcs-rc-btn:active { transform: scale(0.96); }
+  .bcs-rc-btn.primary { background: linear-gradient(135deg,#7c3aed,#5b50f0); color: #fff; box-shadow: 0 2px 6px rgba(91,80,240,0.25); }
+  .bcs-rc-btn.outline { background: #f4f6fb; color: #5b50f0; border: 1px solid rgba(91,80,240,0.3); }
+  .bcs-rc-btn.danger  { background: #fef2f2; color: #dc2626; }
+
+  /* ── SCREEN INDICATOR DOTS ── */
+  .screen-dots {
+    position: absolute; bottom: 14px; left: 50%; transform: translateX(-50%);
+    display: flex; gap: 5px; z-index: 30; pointer-events: none;
+  }
+  .sdot {
+    height: 5px; border-radius: 3px; background: rgba(0,0,0,0.15);
+    transition: all 0.4s cubic-bezier(0.34,1.2,0.64,1);
+    width: 5px;
+  }
+  .sdot.active {
+    width: 18px;
+    background: linear-gradient(90deg,#7c3aed,#5b50f0);
+    box-shadow: 0 0 6px rgba(91,80,240,0.5);
+  }
+
+  /* ── SCREEN LABEL PILL ── */
+  .screen-label-pill {
+    position: absolute; bottom: 14px; left: 50%; transform: translateX(-50%);
+    display: flex; gap: 6px; z-index: 30;
+  }
+  .slp-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: rgba(255,255,255,0.35);
+    transition: all 0.3s;
+  }
+  .slp-dot.slp-active {
+    width: 20px; border-radius: 3px;
+    background: rgba(255,255,255,0.9);
+  }
+
+  /* STATS */
+  .stats-section { background: var(--gray-100); padding: 80px 48px; }
+  .stats-inner {
+    max-width: 1200px; margin: 0 auto;
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 48px; text-align: center;
+  }
+  .stat-number { font-size: 44px; font-weight: 700; color: var(--blue); letter-spacing: -0.03em; margin-bottom: 8px; }
+  .stat-label  { font-size: 16px; color: var(--gray-500); font-weight: 500; }
+
+  /* FEATURES */
+  .features-section { padding: 100px 48px; max-width: 1200px; margin: 0 auto; }
+  .section-tag { font-size: 13px; font-weight: 600; color: var(--blue); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 16px; }
+  .section-title { font-size: clamp(28px, 4vw, 40px); font-weight: 700; letter-spacing: -0.02em; margin-bottom: 16px; }
+  .section-sub { font-size: 17px; color: var(--gray-500); max-width: 480px; line-height: 1.6; margin-bottom: 64px; }
+  .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+  .feature-card { padding: 32px; border-radius: 16px; border: 1px solid var(--gray-200); transition: box-shadow 0.25s, transform 0.25s; }
+  .feature-card:hover { box-shadow: 0 12px 40px rgba(0,0,0,0.08); transform: translateY(-4px); }
+  .feature-title { font-size: 18px; font-weight: 700; margin-bottom: 10px; }
+  .feature-desc  { font-size: 15px; color: var(--gray-500); line-height: 1.6; }
+
+  /* CTA */
+  .cta-section { padding: 100px 48px; text-align: center; background: linear-gradient(135deg, #EBF0FF 0%, #F0F4FF 50%, #E8F4FF 100%); }
+  .cta-inner { max-width: 600px; margin: 0 auto; }
+  .cta-section h2 { font-size: clamp(32px, 4vw, 48px); font-weight: 700; letter-spacing: -0.03em; margin-bottom: 20px; }
+  .cta-section p  { font-size: 18px; color: var(--gray-500); margin-bottom: 40px; line-height: 1.6; }
+  .cta-btns { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+
+  /* FOOTER */
+  footer { background: var(--black); color: rgba(255,255,255,0.5); padding: 60px 48px 40px; }
+  .footer-top { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 48px; }
+  .footer-logo { font-size: 20px; font-weight: 700; color: var(--white); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+  .footer-tagline { font-size: 14px; line-height: 1.6; max-width: 260px; }
+  .footer-col h4 { color: var(--white); font-size: 14px; font-weight: 600; margin-bottom: 16px; }
+  .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .footer-col a  { color: rgba(255,255,255,0.5); text-decoration: none; font-size: 14px; transition: color 0.2s; }
+  .footer-col a:hover { color: var(--white); }
+  .footer-bottom { max-width: 1200px; margin: 0 auto; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+  .footer-bottom p { font-size: 13px; }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .hero { grid-template-columns: 1fr; padding: 40px 24px; text-align: center; }
+    .hero-right { display: none; }
+    .hero-ctas  { justify-content: center; }
+    .hero-trust { justify-content: center; }
+    nav { padding: 0 24px; }
+    .nav-links { display: none; }
+    .stats-inner   { grid-template-columns: 1fr; }
+    .features-grid { grid-template-columns: 1fr; }
+    .footer-top    { grid-template-columns: 1fr 1fr; }
+    .cta-section, .features-section, .stats-section { padding: 60px 24px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="14" cy="14" r="14" fill="#1652F0"/>
+      <text x="14" y="19" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="white">B</text>
+    </svg>
+    BizChat
+  </a>
+  <ul class="nav-links">
+    <li><a href="#">Platform</a></li>
+    <li><a href="#">Conversations</a></li>
+    <li><a href="#">AI Assist</a></li>
+    <li><a href="pricing.html">Pricing</a></li>
+    <li><a href="#">Support</a></li>
+  </ul>
+  <div class="nav-right">
+    <a href="wholesale_manager.html" class="btn-primary">Sign in</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <h1>Conversations that move business forward.</h1>
+    <p class="hero-desc">No noise. Just real communication that works.</p>
+    <div class="hero-ctas">
+      <a href="wholesale_manager.html" class="btn-hero btn-hero-primary">Sign in</a>
+      <a href="#" class="btn-hero btn-hero-secondary">Learn more</a>
+    </div>
+    <div class="hero-trust">
+      <div class="trust-item">
+        <svg viewBox="0 0 16 16" fill="none"><path d="M13.5 4.5L6.5 11.5L2.5 7.5" stroke="#05B169" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Secure messaging
+      </div>
+      <div class="trust-item">
+        <svg viewBox="0 0 16 16" fill="none"><path d="M13.5 4.5L6.5 11.5L2.5 7.5" stroke="#05B169" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Real-time communication
+      </div>
+      <div class="trust-item">
+        <svg viewBox="0 0 16 16" fill="none"><path d="M13.5 4.5L6.5 11.5L2.5 7.5" stroke="#05B169" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        AI-powered support
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="phone-wrap">
+
+      <!-- ambient background orbs -->
+      <div class="phone-ambient">
+        <div class="amb-orb amb-orb-1"></div>
+        <div class="amb-orb amb-orb-2"></div>
+        <div class="amb-orb amb-orb-3"></div>
+      </div>
+
+      <!-- floating notification badges -->
+      <div class="phone-notif notif-1">
+        <div class="notif-icon" style="background:#fef2f2;">💸</div>
+        <div class="notif-text">
+          <div class="notif-title">Payment Received</div>
+          <div class="notif-sub">Sunita Fabrics · ₹32,000</div>
+        </div>
+      </div>
+      <div class="phone-notif notif-2">
+        <div class="notif-icon" style="background:#f0fdf4;">✅</div>
+        <div class="notif-text">
+          <div class="notif-title">Order Confirmed</div>
+          <div class="notif-sub">#ORD-2849 · Mehta &amp; Sons</div>
+        </div>
+      </div>
+      <div class="phone-notif notif-3">
+        <div class="notif-icon" style="background:#eeecff;">🤖</div>
+        <div class="notif-text">
+          <div class="notif-title">AI Reminder Sent</div>
+          <div class="notif-sub">3 contacts · Auto mode</div>
+        </div>
+      </div>
+
+      <!-- 3D floating phone wrapper -->
+      <div class="phone-3d-wrapper">
+        <div style="position:relative; display:inline-block;">
+          <div class="bc-phone-boundary">
+            <!-- left buttons: silent + vol up + vol down -->
+            <div class="bc-btn-l" style="top:88px; height:22px;"></div>
+            <div class="bc-btn-l" style="top:124px; height:40px;"></div>
+            <div class="bc-btn-l" style="top:174px; height:40px;"></div>
+            <!-- right button: power -->
+            <div class="bc-btn-r" style="top:134px; height:56px;"></div>
+
+            <div class="bc-phone">
+
+              <!-- status bar (shared, always visible) -->
+              <div class="bc-statusbar">
+                <div class="bc-statusbar-time" id="sbTime">9:41</div>
+                <div class="bc-statusbar-icons">
+                  <span class="sb-icon">●●●</span>
+                  <span class="sb-icon">WiFi</span>
+                  <span class="sb-icon">🔋</span>
+                </div>
+              </div>
+
+              <!-- ══ SCREEN 1: CONTACT LIST ══ -->
+              <div class="bc-screen bcs-list s-active s-transition" id="bcS1">
+                <div class="bcs-list-hdr">
+                  <div class="bcs-logo-row">
+                    <div class="bcs-logo-dot">B</div>
+                    <div>
+                      <div class="bcs-logo-name">BizChat</div>
+                      <div class="bcs-logo-sub">Wholesale Manager</div>
+                    </div>
+                  </div>
+                  <div class="bcs-hdr-bell">
+                    🔔<div class="bcs-bell-dot"></div>
+                  </div>
+                </div>
+                <div class="bcs-stats">
+                  <div class="bcs-stat"><div class="bcs-stat-n red">3</div><div class="bcs-stat-l">Overdue</div></div>
+                  <div class="bcs-stat"><div class="bcs-stat-n orange">7</div><div class="bcs-stat-l">Pending</div></div>
+                  <div class="bcs-stat"><div class="bcs-stat-n purple">12</div><div class="bcs-stat-l">Paid</div></div>
+                </div>
+                <div class="bcs-search">
+                  <span class="bcs-search-icon">🔍</span>
+                  <span class="bcs-search-txt" id="searchTxt">Search contacts...</span>
+                </div>
+                <div class="bcs-contacts">
+                  <div class="bcs-sect">Recent</div>
+                  <div class="bcs-card bcs-card-active" id="bcc1">
+                    <div class="bcs-av" style="background:linear-gradient(135deg,#f59e0b,#d97706);">R</div>
+                    <div class="bcs-card-body">
+                      <div class="bcs-card-top">
+                        <div class="bcs-card-name">Ramesh Traders</div>
+                        <div class="bcs-card-time">2m</div>
+                      </div>
+                      <div class="bcs-card-tags">
+                        <span class="bcs-otag overdue">Overdue</span>
+                        <span class="bcs-ubadge">2</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="bcs-card" id="bcc2">
+                    <div class="bcs-av" style="background:linear-gradient(135deg,#10b981,#059669);">S</div>
+                    <div class="bcs-card-body">
+                      <div class="bcs-card-top">
+                        <div class="bcs-card-name">Sunita Fabrics</div>
+                        <div class="bcs-card-time">1h</div>
+                      </div>
+                      <div class="bcs-card-tags"><span class="bcs-otag paid">Paid</span></div>
+                    </div>
+                  </div>
+                  <div class="bcs-card" id="bcc3">
+                    <div class="bcs-av" style="background:linear-gradient(135deg,#3b82f6,#2563eb);">M</div>
+                    <div class="bcs-card-body">
+                      <div class="bcs-card-top">
+                        <div class="bcs-card-name">Mehta &amp; Sons</div>
+                        <div class="bcs-card-time">3h</div>
+                      </div>
+                      <div class="bcs-card-tags">
+                        <span class="bcs-otag pending">Pending</span>
+                        <span class="bcs-ubadge">1</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="bcs-card" id="bcc4">
+                    <div class="bcs-av" style="background:linear-gradient(135deg,#ec4899,#db2777);">K</div>
+                    <div class="bcs-card-body">
+                      <div class="bcs-card-top">
+                        <div class="bcs-card-name">Kapoor Silks</div>
+                        <div class="bcs-card-time">1d</div>
+                      </div>
+                      <div class="bcs-card-tags"><span class="bcs-otag new">New</span></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="bcs-nav-bar">
+                  <div class="bcs-nav-item active"><div class="bcs-nav-icon">💬</div><div class="bcs-nav-dot"></div></div>
+                  <div class="bcs-nav-item"><div class="bcs-nav-icon">📦</div><span>Orders</span></div>
+                  <div class="bcs-nav-item"><div class="bcs-nav-icon">🔔</div><span>Remind</span></div>
+                  <div class="bcs-nav-item"><div class="bcs-nav-icon">👤</div><span>Profile</span></div>
+                </div>
+                <div class="screen-dots" id="sdS1">
+                  <div class="sdot active"></div><div class="sdot"></div><div class="sdot"></div>
+                </div>
+              </div>
+
+              <!-- ══ SCREEN 2: CHAT VIEW ══ -->
+              <div class="bc-screen bcs-chat-screen s-offright s-transition" id="bcS2">
+                <div class="bcs-chat-hdr">
+                  <span class="bcs-back">‹</span>
+                  <div class="bcs-chat-av">
+                    R<div class="bcs-av-online"></div>
+                  </div>
+                  <div class="bcs-chat-name-block">
+                    <div class="bcs-chat-cname">Ramesh Traders</div>
+                    <div class="bcs-chat-csub">● Online now</div>
+                  </div>
+                  <div class="bcs-hdr-actions">
+                    <div class="bcs-hdr-btn">📞</div>
+                    <div class="bcs-hdr-btn">⋯</div>
+                  </div>
+                </div>
+                <div class="bcs-order-bar">
+                  <div>
+                    <div class="bcs-ob-left">Latest Order</div>
+                    <div class="bcs-ob-id">#ORD-2847</div>
+                  </div>
+                  <span class="bcs-ob-tag">Overdue</span>
+                  <div style="text-align:right">
+                    <div class="bcs-ob-amt-lbl">Amount</div>
+                    <div class="bcs-ob-amt">₹48,500</div>
+                  </div>
+                </div>
+                <div class="bcs-msgs" id="bcMsgs">
+                  <div class="bcs-sys-msg" id="bcmSys">Today</div>
+                  <div class="bcs-msg in" id="bcm1">Bhai, order kab aayega? Payment clear karna hai 🙏</div>
+                  <div class="bcs-msg out" id="bcm2">Ramesh ji, kal tak dispatch ho jayega. ₹48,500 pending hai. <span class="bcs-msg-tick">✓✓</span></div>
+                  <div class="bcs-typing-row" id="bcmTyping">
+                    <div class="bcs-tdot"></div><div class="bcs-tdot"></div><div class="bcs-tdot"></div>
+                  </div>
+                  <div class="bcs-msg in" id="bcm3">Ok bhai, kal pakka payment kar deta hoon ✅</div>
+                  <div class="bcs-ai-chip" id="bcmAi"><span class="ai-spark">✦</span> AI: Payment reminder queued</div>
+                </div>
+                <div class="bcs-input-row">
+                  <div class="bcs-input-box">
+                    <span class="bcs-input-typing" id="inputTyping"></span>
+                    <span class="bcs-search-cursor"></span>
+                  </div>
+                  <div class="bcs-send-btn" id="sendBtn">➤</div>
+                </div>
+                <div class="screen-dots" id="sdS2">
+                  <div class="sdot"></div><div class="sdot active"></div><div class="sdot"></div>
+                </div>
+              </div>
+
+              <!-- ══ SCREEN 3: REMINDERS ══ -->
+              <div class="bc-screen bcs-remind-screen s-offright s-transition" id="bcS3">
+                <div class="bcs-remind-hdr">
+                  <div class="bcs-remind-title">🔔 Reminders</div>
+                  <div class="bcs-remind-badge">3 pending</div>
+                </div>
+                <div class="bcs-auto-row" id="bcAutoRow">
+                  <div>
+                    <div class="bcs-auto-label">✦ AI Auto-Remind</div>
+                    <div class="bcs-auto-sub">Active for 7 contacts</div>
+                  </div>
+                  <div class="bcs-toggle"></div>
+                </div>
+                <div class="bcs-remind-body">
+                  <div class="bcs-rcard" id="bcrCard1">
+                    <div class="bcs-rc-top">
+                      <div>
+                        <div class="bcs-rc-name">Ramesh Traders</div>
+                        <div class="bcs-rc-sub">#ORD-2847 · ₹48,500</div>
+                      </div>
+                      <span class="bcs-rc-badge urgent">Day 7</span>
+                    </div>
+                    <div class="bcs-rc-detail">
+                      3 reminders sent · <span class="bcs-noreply">No reply</span>
+                    </div>
+                    <div class="bcs-rc-prog"><div class="bcs-rc-prog-fill" style="background:#dc2626; --prog-w:80%;"></div></div>
+                    <div class="bcs-rc-actions">
+                      <div class="bcs-rc-btn primary">Send Now</div>
+                      <div class="bcs-rc-btn outline">Chat</div>
+                      <div class="bcs-rc-btn danger">Stop</div>
+                    </div>
+                  </div>
+                  <div class="bcs-rcard" id="bcrCard2">
+                    <div class="bcs-rc-top">
+                      <div>
+                        <div class="bcs-rc-name">Mehta &amp; Sons</div>
+                        <div class="bcs-rc-sub">#ORD-2831 · ₹22,000</div>
+                      </div>
+                      <span class="bcs-rc-badge warn">Day 4</span>
+                    </div>
+                    <div class="bcs-rc-detail">
+                      2 reminders sent · <span class="bcs-replied">Replied</span>
+                    </div>
+                    <div class="bcs-rc-prog"><div class="bcs-rc-prog-fill" style="background:#ea580c; --prog-w:50%;"></div></div>
+                    <div class="bcs-rc-actions">
+                      <div class="bcs-rc-btn primary">Send Now</div>
+                      <div class="bcs-rc-btn outline">Chat</div>
+                      <div class="bcs-rc-btn danger">Stop</div>
+                    </div>
+                  </div>
+                  <div class="bcs-rcard" id="bcrCard3">
+                    <div class="bcs-rc-top">
+                      <div>
+                        <div class="bcs-rc-name">Kapoor Silks</div>
+                        <div class="bcs-rc-sub">#ORD-2819 · ₹11,750</div>
+                      </div>
+                      <span class="bcs-rc-badge ok">Day 2</span>
+                    </div>
+                    <div class="bcs-rc-detail">
+                      1 reminder sent · <span class="bcs-replied">Replied</span>
+                    </div>
+                    <div class="bcs-rc-prog"><div class="bcs-rc-prog-fill" style="background:#16a34a; --prog-w:25%;"></div></div>
+                    <div class="bcs-rc-actions">
+                      <div class="bcs-rc-btn primary">Send Now</div>
+                      <div class="bcs-rc-btn outline">Chat</div>
+                      <div class="bcs-rc-btn danger">Stop</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="screen-dots" id="sdS3">
+                  <div class="sdot"></div><div class="sdot"></div><div class="sdot active"></div>
+                </div>
+              </div>
+
+              <!-- Dynamic Island (above all screens) -->
+              <div class="bc-island" id="bcIsland">
+                <div class="bc-island-mic"></div>
+                <div class="bc-island-content" id="islandContent">
+                  <div class="island-app-icon">B</div>
+                  <div class="island-text" id="islandText"></div>
+                </div>
+                <div class="bc-island-camera"></div>
+              </div>
+
+            </div><!-- /bc-phone -->
+          </div><!-- /bc-phone-boundary -->
+          <div class="bc-phone-shadow"></div>
+        </div>
+      </div><!-- /phone-3d-wrapper -->
+
+    </div><!-- /phone-wrap -->
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features-section">
+  <div class="section-tag">Why BizChat</div>
+  <h2 class="section-title">Built for modern businesses</h2>
+  <p class="section-sub">Everything you need to communicate, collaborate, and grow — all in one place.</p>
+  <div class="features-grid">
+    <div class="feature-card">
+      <h3 class="feature-title">Safe &amp; secure</h3>
+      <p class="feature-desc">End-to-end encrypted messaging keeps your conversations private and protected at all times.</p>
+    </div>
+    <div class="feature-card">
+      <h3 class="feature-title">Real-time chat</h3>
+      <p class="feature-desc">Instant messaging with your customers and team. No delays, no friction — just fast communication.</p>
+    </div>
+    <div class="feature-card">
+      <h3 class="feature-title">Lightning fast</h3>
+      <p class="feature-desc">Messages delivered instantly across all devices. Stay in sync wherever your team is working.</p>
+    </div>
+    <div class="feature-card">
+      <h3 class="feature-title">AI-powered support</h3>
+      <p class="feature-desc">Smart AI assists your team with suggested replies, summaries, and automated workflows.</p>
+    </div>
+    <div class="feature-card">
+      <h3 class="feature-title">Analytics &amp; insights</h3>
+      <p class="feature-desc">Track response times, team performance, and customer satisfaction from one dashboard.</p>
+    </div>
+    <div class="feature-card">
+      <h3 class="feature-title">Mobile app</h3>
+      <p class="feature-desc">Stay connected on the go with our top-rated iOS and Android apps. Available 24/7 from anywhere.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="cta-inner">
+    <h2>Start better conversations today</h2>
+    <p>Create your free BizChat account in minutes. Bring your team, customers, and growth into one place.</p>
+    <div class="cta-btns">
+      <a href="wholesale_manager.html" class="btn-hero btn-hero-primary">Sign in</a>
+      <a href="#" class="btn-hero btn-hero-secondary">Download the app</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div>
+      <div class="footer-logo">
+        <svg width="24" height="24" viewBox="0 0 28 28" fill="none"><circle cx="14" cy="14" r="14" fill="#1652F0"/><text x="14" y="19" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="white">B</text></svg>
+        BizChat
+      </div>
+      <p class="footer-tagline">Built for businesses in India 🇮🇳</p>
+      <p class="footer-tagline" style="margin-top:8px;">Secure • Fast • Reliable</p>
+    </div>
+    <div class="footer-col">
+      <h4>Products</h4>
+      <ul>
+        <li><a href="#">Messaging</a></li>
+        <li><a href="#">Team Inbox</a></li>
+        <li><a href="#">BizChat Pro</a></li>
+        <li><a href="#">Integrations</a></li>
+        <li><a href="#">API</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Learn</h4>
+      <ul>
+        <li><a href="#">Getting started</a></li>
+        <li><a href="#">Documentation</a></li>
+        <li><a href="#">Case studies</a></li>
+        <li><a href="#">Help centre</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Careers</a></li>
+        <li><a href="#">Blog</a></li>
+        <li><a href="#">Press</a></li>
+        <li><a href="#">Legal</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2024 BizChat. All rights reserved.</p>
+    <p style="color:rgba(255,255,255,0.4);">Built for businesses in India 🇮🇳 &nbsp;·&nbsp; Secure • Fast • Reliable</p>
+    <p>Privacy Policy · Terms of Service</p>
+  </div>
+</footer>
+
+<script>
+/* ═══════════════════════════════════════════════════════════
+   BizChat Phone Showcase — Premium Animation Engine v3
+═══════════════════════════════════════════════════════════ */
+
+const screens = [
+  document.getElementById('bcS1'),
+  document.getElementById('bcS2'),
+  document.getElementById('bcS3')
+];
+let current = 0;
+let cycleTimer = null;
+
+/* ── live clock ── */
+function updateClock() {
+  const now = new Date();
+  const h = now.getHours() % 12 || 12;
+  const m = String(now.getMinutes()).padStart(2,'0');
+  const el = document.getElementById('sbTime');
+  if (el) el.textContent = h + ':' + m;
+}
+updateClock();
+setInterval(updateClock, 30000);
+
+/* ── Dynamic Island ── */
+const island = document.getElementById('bcIsland');
+const islandText = document.getElementById('islandText');
+function islandPop(msg, dur = 2800) {
+  islandText.textContent = msg;
+  island.classList.add('island-expand');
+  setTimeout(() => island.classList.remove('island-expand'), dur);
+}
+
+/* ── screen transition ── */
+function goToScreen(next) {
+  if (next === current) return;
+  const prev = current;
+  const goRight = next > prev;
+
+  // exit current
+  screens[prev].classList.remove('s-active');
+  screens[prev].classList.add(goRight ? 's-exit-l' : 's-exit-r');
+
+  // prep next off-screen
+  screens[next].classList.remove('s-offright','s-offleft','s-exit-l','s-exit-r');
+  // temporarily disable transition to snap to start position
+  screens[next].classList.remove('s-transition');
+  screens[next].classList.add(goRight ? 's-offright' : 's-offleft');
+  screens[next].getBoundingClientRect(); // force reflow
+  screens[next].classList.add('s-transition');
+  screens[next].classList.remove('s-offright','s-offleft');
+  screens[next].classList.add('s-active');
+
+  current = next;
+
+  // clean up old screen after transition
+  setTimeout(() => {
+    screens[prev].classList.remove('s-exit-l','s-exit-r');
+    screens[prev].classList.add(goRight ? 's-offleft' : 's-offright');
+  }, 650);
+
+  // run screen content animations
+  if (next === 0) runListAnimation();
+  if (next === 1) runChatAnimation();
+  if (next === 2) runReminderAnimation();
+}
+
+/* ──────────────────────────────────────────
+   SCREEN 1: Contact list stagger-in
+────────────────────────────────────────── */
+function resetList() {
+  ['bcc1','bcc2','bcc3','bcc4'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.classList.remove('card-visible');
+  });
+}
+function runListAnimation() {
+  resetList();
+  islandPop('BizChat · 22 chats');
+  ['bcc1','bcc2','bcc3','bcc4'].forEach((id, i) => {
+    setTimeout(() => {
+      const el = document.getElementById(id);
+      if (el) el.classList.add('card-visible');
+    }, 200 + i * 120);
+  });
+}
+
+/* ──────────────────────────────────────────
+   SCREEN 2: Chat bubbles sequence
+────────────────────────────────────────── */
+const CHAT_IDS = ['bcmSys','bcm1','bcm2','bcmTyping','bcm3','bcmAi'];
+function resetChat() {
+  CHAT_IDS.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.classList.remove('show');
+  });
+  const inp = document.getElementById('inputTyping');
+  if (inp) inp.textContent = '';
+  const btn = document.getElementById('sendBtn');
+  if (btn) btn.classList.remove('sending');
+}
+
+const typingMsg = 'Ok, sending reminder now...';
+let typeIdx = 0, typeTimer = null;
+function startTypingEffect() {
+  const inp = document.getElementById('inputTyping');
+  if (!inp) return;
+  inp.textContent = '';
+  typeIdx = 0;
+  clearInterval(typeTimer);
+  typeTimer = setInterval(() => {
+    if (typeIdx < typingMsg.length) {
+      inp.textContent += typingMsg[typeIdx++];
+    } else {
+      clearInterval(typeTimer);
+      // animate send
+      setTimeout(() => {
+        inp.textContent = '';
+        const btn = document.getElementById('sendBtn');
+        if (btn) { btn.classList.add('sending'); setTimeout(() => btn.classList.remove('sending'), 400); }
+      }, 600);
+    }
+  }, 55);
+}
+
+function runChatAnimation() {
+  resetChat();
+  islandPop('Ramesh Traders · typing...');
+  const delays = [200, 500, 1200, 2100, 3200, 4300];
+  const ids     = ['bcmSys','bcm1','bcm2','bcmTyping','bcm3','bcmAi'];
+  ids.forEach((id, i) => {
+    setTimeout(() => {
+      const el = document.getElementById(id);
+      if (el) el.classList.add('show');
+      if (id === 'bcmTyping') setTimeout(() => el && el.classList.remove('show'), 1000);
+    }, delays[i]);
+  });
+  // start typing in input bar after messages done
+  setTimeout(startTypingEffect, 5000);
+}
+
+/* ──────────────────────────────────────────
+   SCREEN 3: Reminder cards stagger-in
+────────────────────────────────────────── */
+function resetReminders() {
+  document.getElementById('bcAutoRow')?.classList.remove('show');
+  ['bcrCard1','bcrCard2','bcrCard3'].forEach(id => {
+    document.getElementById(id)?.classList.remove('show');
+  });
+}
+function runReminderAnimation() {
+  resetReminders();
+  islandPop('3 payments overdue');
+  setTimeout(() => document.getElementById('bcAutoRow')?.classList.add('show'), 200);
+  ['bcrCard1','bcrCard2','bcrCard3'].forEach((id, i) => {
+    setTimeout(() => document.getElementById(id)?.classList.add('show'), 450 + i * 200);
+  });
+}
+
+/* ──────────────────────────────────────────
+   Initial load: animate screen 1 cards in
+────────────────────────────────────────── */
+window.addEventListener('load', () => {
+  runListAnimation();
+  startCycle();
+});
+
+/* ──────────────────────────────────────────
+   Auto-cycle: 0→1→2→0→…
+────────────────────────────────────────── */
+const DWELL = [5000, 7000, 6500]; // ms per screen
+function startCycle() {
+  clearTimeout(cycleTimer);
+  function step() {
+    const next = (current + 1) % screens.length;
+    goToScreen(next);
+    cycleTimer = setTimeout(step, DWELL[next]);
+  }
+  cycleTimer = setTimeout(step, DWELL[0]);
+}
+</script>
+
+</body>
+</html>

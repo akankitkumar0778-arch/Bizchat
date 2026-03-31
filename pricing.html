@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pricing — BizChat</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --blue: #1652F0;
+    --blue-dark: #0A38C0;
+    --blue-light: #EBF0FF;
+    --black: #0A0B0D;
+    --white: #FFFFFF;
+    --gray-100: #F5F7FA;
+    --gray-200: #E8ECF0;
+    --gray-500: #6B7280;
+    --gray-700: #374151;
+    --green: #05B169;
+    --gold: #F5A623;
+    --nav-h: 64px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background-color: #f0eeff;
+    background-image:
+      radial-gradient(ellipse 80% 60% at 10% 10%, rgba(180,160,255,0.55) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 50% at 90% 5%,  rgba(200,185,255,0.4) 0%, transparent 55%),
+      radial-gradient(ellipse 70% 60% at 80% 80%, rgba(255,180,200,0.35) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 50% at 20% 85%, rgba(160,190,255,0.3) 0%, transparent 55%),
+      radial-gradient(ellipse 90% 40% at 50% 50%, rgba(230,225,255,0.25) 0%, transparent 70%);
+    background-attachment: fixed;
+    color: var(--black);
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    height: var(--nav-h);
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--gray-200);
+    display: flex; align-items: center;
+    padding: 0 48px;
+    z-index: 100;
+    animation: slideDown 0.6s ease both;
+  }
+  @keyframes slideDown { from { transform: translateY(-100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+  .nav-logo {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 20px; font-weight: 700; color: var(--black);
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex; gap: 32px; margin-left: 40px;
+    list-style: none;
+  }
+  .nav-links a {
+    font-size: 14px; font-weight: 500;
+    color: var(--gray-700); text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover, .nav-links a.active { color: var(--blue); }
+
+  .nav-right {
+    margin-left: auto;
+    display: flex; align-items: center; gap: 16px;
+  }
+
+  .btn-ghost {
+    font-size: 14px; font-weight: 600;
+    color: var(--black); background: none; border: none;
+    cursor: pointer; padding: 8px 16px;
+    border-radius: 8px; transition: background 0.2s;
+    text-decoration: none;
+  }
+  .btn-ghost:hover { background: var(--gray-100); }
+
+  .btn-primary {
+    font-size: 14px; font-weight: 600;
+    color: var(--white); background: var(--blue);
+    border: none; cursor: pointer;
+    padding: 10px 20px; border-radius: 8px;
+    transition: background 0.2s, transform 0.15s;
+    text-decoration: none; display: inline-block;
+  }
+  .btn-primary:hover { background: var(--blue-dark); transform: translateY(-1px); }
+
+  /* PAGE */
+  .page {
+    padding-top: calc(var(--nav-h) + 72px);
+    padding-bottom: 100px;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+
+  /* HERO TEXT */
+  .pricing-hero {
+    text-align: center;
+    margin-bottom: 60px;
+    animation: fadeUp 0.7s 0.1s ease both;
+  }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: translateY(0); } }
+
+  .pricing-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(255,255,255,0.25);
+    backdrop-filter: blur(8px);
+    color: #fff;
+    font-size: 13px; font-weight: 600;
+    padding: 6px 16px; border-radius: 100px;
+    margin-bottom: 20px;
+    border: 1px solid rgba(255,255,255,0.3);
+  }
+
+  .pricing-title {
+    font-family: 'Sora', sans-serif;
+    font-size: clamp(36px, 5vw, 56px);
+    font-weight: 800;
+    color: #1a1040;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    margin-bottom: 16px;
+  }
+  .pricing-title span { color: #6c47ff; }
+
+  .pricing-sub {
+    font-size: 18px;
+    color: rgba(60,40,120,0.7);
+    max-width: 620px;
+    margin: 0 auto 32px;
+    line-height: 1.6;
+  }
+
+  /* TOGGLE */
+  .toggle-wrap {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(255,255,255,0.6);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(120,100,220,0.2);
+    padding: 6px 8px;
+    border-radius: 100px;
+  }
+  .toggle-label {
+    font-size: 14px; font-weight: 600; color: #5b3fc8;
+    padding: 4px 12px; border-radius: 100px; cursor: pointer;
+    transition: all 0.2s;
+  }
+  .toggle-label.active {
+    background: #6c47ff; color: #fff;
+  }
+  .save-badge {
+    background: #05B169; color: #fff;
+    font-size: 11px; font-weight: 700;
+    padding: 2px 8px; border-radius: 100px;
+  }
+
+  /* CARDS */
+  .plans-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 80px;
+    animation: fadeUp 0.7s 0.25s ease both;
+  }
+
+  .plan-card {
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(20px);
+    border-radius: 24px;
+    padding: 32px 28px;
+    border: 1px solid rgba(255,255,255,0.6);
+    box-shadow: 0 8px 40px rgba(0,0,0,0.1);
+    position: relative;
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  .plan-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+  }
+
+  .plan-card.pro {
+    background: linear-gradient(145deg, #1a0a3e 0%, #0d0620 50%, #1a0a3e 100%);
+    border: 1px solid rgba(245,166,35,0.4);
+    position: relative;
+    color: #fff;
+    overflow: hidden;
+  }
+  /* shiny noise texture overlay */
+  .plan-card.pro::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 120% 80% at 50% -10%, rgba(245,166,35,0.18) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 40% at 100% 100%, rgba(180,100,255,0.12) 0%, transparent 55%);
+    border-radius: 24px;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .plan-card.pro > * { position: relative; z-index: 1; }
+
+  @keyframes glowPulse {
+    0%,100% { opacity: 1; }
+    50% { opacity: 0.7; }
+  }
+  /* outer glow */
+  .plan-card.pro::after {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: 25px;
+    background: linear-gradient(135deg, rgba(245,166,35,0.6), rgba(180,100,255,0.3), rgba(245,166,35,0.6));
+    z-index: -1;
+    animation: glowPulse 3s ease-in-out infinite;
+  }
+
+  .popular-tag {
+    position: absolute;
+    top: -14px; left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(90deg, #F5A623, #f7c26b);
+    color: #000;
+    font-size: 12px; font-weight: 700;
+    padding: 4px 18px;
+    border-radius: 100px;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+  }
+
+  .plan-name {
+    font-size: 14px; font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--gray-500);
+    margin-bottom: 12px;
+  }
+  .plan-card.pro .plan-name { color: #F5A623; }
+
+  .plan-price {
+    display: flex;
+    align-items: flex-end;
+    gap: 4px;
+    margin-bottom: 8px;
+  }
+  .price-currency { font-size: 24px; font-weight: 700; line-height: 1.4; color: var(--gray-700); }
+  .plan-card.pro .price-currency { color: #F5A623; }
+  .price-amount {
+    font-family: 'Sora', sans-serif;
+    font-size: 44px; font-weight: 800;
+    line-height: 1; letter-spacing: -0.03em;
+    color: var(--black);
+  }
+  .plan-card.pro .price-amount { color: #fff; text-shadow: 0 0 40px rgba(245,166,35,0.3); }
+  .price-per { font-size: 14px; color: var(--gray-500); padding-bottom: 8px; }
+  .plan-card.pro .price-per { color: rgba(255,255,255,0.5); }
+
+  .plan-desc {
+    font-size: 13px; color: var(--gray-500);
+    margin-bottom: 18px; line-height: 1.5;
+  }
+  .plan-card.pro .plan-desc { color: rgba(255,255,255,0.65); border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 16px; margin-bottom: 16px; }
+
+  .plan-btn {
+    display: block; width: 100%;
+    padding: 11px;
+    border-radius: 12px;
+    font-size: 14px; font-weight: 700;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+    margin-bottom: 20px;
+  }
+  .plan-btn-free {
+    background: var(--gray-100);
+    color: var(--black);
+    border: 2px solid var(--gray-200);
+  }
+  .plan-btn-free:hover { background: var(--gray-200); }
+  .plan-btn-pro {
+    background: linear-gradient(90deg, #F5A623, #f7c26b);
+    color: #000;
+    box-shadow: 0 4px 20px rgba(245,166,35,0.4);
+  }
+  .plan-btn-pro:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(245,166,35,0.5); }
+
+  .features-label {
+    font-size: 12px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--gray-500);
+    margin-bottom: 16px;
+  }
+  .plan-card.pro .features-label { color: rgba(245,166,35,0.7); border-top: 1px solid rgba(255,255,255,0.08); padding-top: 20px; }
+
+  .feature-list { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+
+  .feature-item {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 13px; font-weight: 500; color: var(--gray-700);
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+  }
+  .feature-item:nth-last-child(-n+2) { border-bottom: none; }
+  .plan-card.pro .feature-item {
+    color: rgba(255,255,255,0.88);
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+  }
+  .plan-card.pro .feature-item:nth-last-child(-n+2) { border-bottom: none; }
+
+  .feature-item .fi-icon {
+    width: 22px; height: 22px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 800; flex-shrink: 0;
+  }
+  .fi-yes { background: rgba(5,177,105,0.12); color: #05B169; }
+  .fi-no  { background: rgba(239,68,68,0.1); color: #EF4444; }
+  .plan-card.pro .fi-yes {
+    background: linear-gradient(135deg, rgba(245,166,35,0.25), rgba(245,166,35,0.1));
+    color: #F5A623;
+    box-shadow: 0 0 8px rgba(245,166,35,0.2);
+  }
+
+  .divider { display: none; }
+
+  /* COMPARISON TABLE */
+  .compare-section {
+    animation: fadeUp 0.7s 0.4s ease both;
+    margin-bottom: 80px;
+  }
+
+  .section-label {
+    text-align: center;
+    font-size: 13px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.1em;
+    color: rgba(100,70,200,0.7);
+    margin-bottom: 12px;
+  }
+  .section-title {
+    font-family: 'Sora', sans-serif;
+    text-align: center;
+    font-size: clamp(28px, 4vw, 40px);
+    font-weight: 800;
+    color: #1a1040;
+    margin-bottom: 8px;
+    letter-spacing: -0.02em;
+  }
+  .section-sub {
+    text-align: center;
+    color: rgba(60,40,120,0.6);
+    font-size: 16px;
+    margin-bottom: 40px;
+  }
+
+  /* ── PREMIUM COMPARE TABLE ── */
+  .compare-outer {
+    position: relative;
+  }
+  .compare-glow {
+    position: absolute;
+    width: 40%; height: 100%;
+    top: 0; right: -2%;
+    background: radial-gradient(ellipse at center, rgba(245,140,20,0.55) 0%, rgba(245,166,35,0.25) 35%, transparent 70%);
+    filter: blur(38px);
+    pointer-events: none;
+    z-index: 0;
+    border-radius: 50%;
+  }
+  .compare-wrap {
+    position: relative;
+    z-index: 1;
+    background: #0e0f11;
+    border-radius: 24px;
+    overflow: visible;
+    border: 1px solid rgba(255,255,255,0.07);
+    box-shadow: 0 32px 80px rgba(0,0,0,0.6);
+  }
+  /* clip inner content */
+  .compare-wrap > * { position: relative; z-index: 1; }
+  /* gold right-column outer glow box */
+  .compare-wrap::after {
+    content: '';
+    position: absolute;
+    top: -3px; right: -3px; bottom: -3px;
+    width: calc(220px + 6px);
+    border-radius: 0 26px 26px 0;
+    border: 2px solid rgba(245,166,35,0.65);
+    box-shadow:
+      0 0 18px 4px rgba(245,140,20,0.45),
+      0 0 50px 10px rgba(245,140,20,0.2),
+      inset 0 0 20px rgba(245,166,35,0.06);
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  /* columns layout */
+  .ct-header, .ct-row, .ct-footer {
+    display: grid;
+    grid-template-columns: 1fr 200px 220px;
+    align-items: center;
+  }
+
+  /* HEADER */
+  .ct-header {
+    background: #131417;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+  }
+  .ct-col-feature {
+    padding: 20px 32px;
+    font-size: 12px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.1em;
+    color: rgba(255,255,255,0.25);
+  }
+  .ct-col-other {
+    padding: 20px 24px;
+    text-align: center;
+    border-left: 1px solid rgba(255,255,255,0.07);
+  }
+  .ct-col-biz {
+    padding: 20px 24px;
+    text-align: center;
+    border-left: 1px solid rgba(245,166,35,0.3);
+    background: linear-gradient(180deg, rgba(20,12,40,0.97) 0%, rgba(14,10,28,0.97) 100%);
+    position: relative;
+  }
+  /* gold top border on biz column */
+  .ct-header .ct-col-biz::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #F5A623, #f7c26b);
+    border-radius: 0 0 0 0;
+  }
+
+  .ct-head-label {
+    font-size: 15px; font-weight: 700;
+    color: rgba(255,255,255,0.6);
+  }
+  .ct-biz-top {
+    display: flex; align-items: center; justify-content: center;
+    gap: 8px; margin-bottom: 0;
+    background: linear-gradient(90deg, #F5A623, #f7c26b);
+    border-radius: 12px;
+    padding: 8px 16px;
+  }
+  .ct-biz-name {
+    font-family: 'Sora', sans-serif;
+    font-size: 16px; font-weight: 800;
+    color: #1a0a00;
+  }
+  .ct-biz-sub {
+    display: none;
+  }
+
+  /* BODY ROWS */
+  .ct-body { }
+  .ct-row {
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    transition: background 0.2s;
+  }
+  .ct-row:hover { background: rgba(255,255,255,0.02); }
+  .ct-row-last { border-bottom: none; }
+
+  .ct-row .ct-col-feature {
+    display: flex; align-items: center; gap: 12px;
+    font-size: 15px; font-weight: 500;
+    color: rgba(255,255,255,0.8);
+    text-transform: none; letter-spacing: 0;
+    padding: 20px 32px;
+  }
+  .ct-feat-icon {
+    font-size: 18px;
+    width: 36px; height: 36px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .ct-row .ct-col-other {
+    padding: 20px 24px;
+    text-align: center;
+  }
+  .ct-row .ct-col-biz {
+    padding: 20px 24px;
+    text-align: center;
+    background: linear-gradient(180deg, rgba(20,12,40,0.97) 0%, rgba(14,10,28,0.97) 100%);
+    border-left: 1px solid rgba(245,166,35,0.25);
+  }
+
+  /* BADGES */
+  .badge-yes {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 32px; height: 32px; border-radius: 10px;
+    background: rgba(255,255,255,0.07);
+    color: rgba(255,255,255,0.5);
+    font-size: 14px; font-weight: 700;
+  }
+  .badge-no {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 32px; height: 32px; border-radius: 10px;
+    background: rgba(239,68,68,0.12);
+    color: #EF4444;
+    font-size: 13px; font-weight: 800;
+  }
+  .badge-gold {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 32px; height: 32px; border-radius: 8px;
+    background: linear-gradient(135deg, #F5A623, #f7c26b);
+    color: #1a0a00;
+    font-size: 16px; font-weight: 900;
+    box-shadow: 0 2px 10px rgba(245,166,35,0.45);
+  }
+
+  /* FOOTER ROW */
+  .ct-footer {
+    background: #131417;
+    border-top: 1px solid rgba(255,255,255,0.07);
+    padding: 4px 0;
+  }
+  .ct-footer .ct-col-feature { padding: 20px 32px; }
+  .ct-footer .ct-col-other { padding: 20px 24px; }
+  .ct-footer .ct-col-biz {
+    padding: 16px 24px;
+    background: linear-gradient(180deg, rgba(20,12,40,0.97) 0%, rgba(14,10,28,0.97) 100%);
+    border-left: 1px solid rgba(245,166,35,0.2);
+  }
+  .ct-upgrade-btn {
+    display: inline-block;
+    background: linear-gradient(90deg, #F5A623, #f7c26b);
+    color: #1a0a00;
+    font-size: 13px; font-weight: 800;
+    padding: 10px 20px;
+    border-radius: 10px;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: all 0.2s;
+    box-shadow: 0 4px 20px rgba(245,166,35,0.35);
+  }
+  .ct-upgrade-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(245,166,35,0.5); }
+
+  /* TRUST SECTION */
+  .trust-section {
+    text-align: center;
+    animation: fadeUp 0.7s 0.5s ease both;
+    margin-bottom: 80px;
+  }
+  .trust-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .trust-card {
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(12px);
+    border-radius: 16px;
+    padding: 28px 24px;
+    border: 1px solid rgba(255,255,255,0.6);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    transition: transform 0.2s;
+  }
+  .trust-card:hover { transform: translateY(-4px); }
+  .trust-icon { font-size: 32px; margin-bottom: 12px; }
+  .trust-num {
+    font-family: 'Sora', sans-serif;
+    font-size: 32px; font-weight: 800;
+    color: var(--blue); margin-bottom: 4px;
+  }
+  .trust-text { font-size: 14px; color: var(--gray-500); font-weight: 500; }
+
+  /* FAQ */
+  .faq-section {
+    max-width: 680px;
+    margin: 0 auto 80px;
+    animation: fadeUp 0.7s 0.6s ease both;
+  }
+  .faq-item {
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(12px);
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,0.6);
+    margin-bottom: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+  }
+  .faq-q {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 24px;
+    font-size: 15px; font-weight: 600; color: var(--black);
+    cursor: pointer;
+    user-select: none;
+    gap: 16px;
+  }
+  .faq-q:hover { color: var(--blue); }
+  .faq-arrow {
+    font-size: 20px; color: var(--gray-500);
+    transition: transform 0.3s;
+    flex-shrink: 0;
+  }
+  .faq-item.open .faq-arrow { transform: rotate(45deg); color: var(--blue); }
+  .faq-a {
+    max-height: 0; overflow: hidden;
+    transition: max-height 0.3s ease, padding 0.3s;
+    font-size: 14px; color: var(--gray-500); line-height: 1.7;
+    padding: 0 24px;
+  }
+  .faq-item.open .faq-a {
+    max-height: 200px;
+    padding: 0 24px 20px;
+  }
+
+  /* CTA BOTTOM */
+  .cta-bottom {
+    text-align: center;
+    background: linear-gradient(145deg, #1a1040 0%, #0d0a2e 60%, #1a1040 100%);
+    border-radius: 24px;
+    padding: 64px 40px;
+    border: 1px solid rgba(255,255,255,0.08);
+    box-shadow: 0 8px 60px rgba(0,0,0,0.35);
+    animation: fadeUp 0.7s 0.7s ease both;
+  }
+  .cta-bottom h2 {
+    font-family: 'Sora', sans-serif;
+    font-size: clamp(28px, 4vw, 46px);
+    font-weight: 800;
+    color: #ffffff;
+    margin-bottom: 12px;
+    letter-spacing: -0.02em;
+  }
+  .cta-bottom p { font-size: 16px; color: rgba(255,255,255,0.55); margin-bottom: 32px; }
+  .cta-btns { display: flex; align-items: center; justify-content: center; gap: 16px; flex-wrap: wrap; margin-bottom: 24px; }
+  .btn-hero {
+    font-size: 15px; font-weight: 700;
+    padding: 14px 28px; border-radius: 10px;
+    cursor: pointer; border: none;
+    transition: all 0.2s; text-decoration: none;
+    display: inline-block;
+  }
+  .btn-hero-primary {
+    background: linear-gradient(90deg, #F5A623, #f7c26b);
+    color: #000;
+    box-shadow: 0 4px 20px rgba(245,166,35,0.4);
+  }
+  .btn-hero-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(245,166,35,0.55); }
+  .btn-hero-secondary {
+    background: rgba(255,255,255,0.1);
+    color: #fff;
+    border: 1.5px solid rgba(255,255,255,0.2);
+    backdrop-filter: blur(8px);
+  }
+  .btn-hero-secondary:hover { background: rgba(255,255,255,0.18); }
+  .cta-trust {
+    display: flex; align-items: center; justify-content: center;
+    gap: 6px; flex-wrap: wrap;
+    font-size: 13px; font-weight: 600;
+    color: #F5A623;
+  }
+  .cta-trust-dot { color: rgba(255,255,255,0.25); }
+
+  /* FOOTER */
+  footer {
+    background: #0A0B0D;
+    color: rgba(255,255,255,0.6);
+    text-align: center;
+    padding: 32px;
+    font-size: 14px;
+  }
+  footer a { color: rgba(255,255,255,0.4); text-decoration: none; }
+  footer a:hover { color: #fff; }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    nav { padding: 0 20px; }
+    .nav-links { display: none; }
+    .plans-grid { grid-template-columns: 1fr; }
+    .trust-grid { grid-template-columns: 1fr; }
+    .compare-table td, .compare-table th { padding: 14px 16px; }
+    .page { padding-left: 16px; padding-right: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="home_page.html" class="nav-logo">
+    <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><circle cx="14" cy="14" r="14" fill="#1652F0"/><text x="14" y="19" text-anchor="middle" font-family="Arial" font-size="14" font-weight="700" fill="white">B</text></svg>
+    BizChat
+  </a>
+  <ul class="nav-links">
+    <li><a href="home_page.html">Platform</a></li>
+    <li><a href="home_page.html">Conversations</a></li>
+    <li><a href="home_page.html">AI Assist</a></li>
+    <li><a href="pricing.html" class="active">Pricing</a></li>
+    <li><a href="home_page.html">Support</a></li>
+  </ul>
+  <div class="nav-right">
+    <a href="wholesale_manager.html" class="btn-primary">Sign in</a>
+  </div>
+</nav>
+
+<div class="page">
+
+  <!-- HERO -->
+  <div class="pricing-hero">
+    <h1 class="pricing-title">Plans that grow <span>with you</span></h1>
+    <p class="pricing-sub">Smart Wholesale Order Management — Instantly detect, track, and manage customer orders from chat in one powerful dashboard.</p>
+    <div class="toggle-wrap" id="toggleWrap">
+      <span class="toggle-label active" id="monthlyBtn" onclick="setToggle('monthly')">Monthly</span>
+      <span class="toggle-label" id="yearlyBtn" onclick="setToggle('yearly')">Yearly <span class="save-badge">Save 20%</span></span>
+    </div>
+  </div>
+
+  <!-- PLAN CARDS -->
+  <div class="plans-grid">
+
+    <!-- FREE -->
+    <div class="plan-card">
+      <div class="plan-name">Free</div>
+      <div class="plan-price">
+        <span class="price-amount">₹0</span>
+      </div>
+      <div class="plan-desc">Perfect to get started. No credit card needed.</div>
+      <a href="#" class="plan-btn plan-btn-free">Get started free →</a>
+      <div class="features-label">What's included</div>
+      <ul class="feature-list">
+        <li class="feature-item"><span class="fi-icon fi-yes">✓</span> Unified messaging</li>
+        <li class="feature-item"><span class="fi-icon fi-yes">✓</span> Instant replies</li>
+        <li class="feature-item"><span class="fi-icon fi-yes">✓</span> Secure &amp; private chats</li>
+        <li class="feature-item"><span class="fi-icon fi-yes">✓</span> Cross-platform access</li>
+        <li class="feature-item"><span class="fi-icon fi-yes">✓</span> Up to 3 team members</li>
+        <div class="divider"></div>
+        <li class="feature-item"><span class="fi-icon fi-no">✕</span> AI-powered support</li>
+        <li class="feature-item"><span class="fi-icon fi-no">✕</span> Analytics &amp; insights</li>
+        <li class="feature-item"><span class="fi-icon fi-no">✕</span> Built for businesses tools</li>
+        <li class="feature-item"><span class="fi-icon fi-no">✕</span> Priority support</li>
+      </ul>
+    </div>
+
+    <!-- PRO -->
+    <div class="plan-card pro">
+      <div class="popular-tag">⭐ MOST POPULAR</div>
+      <div class="plan-name">Pro</div>
+      <div class="plan-price">
+        <span class="price-currency">₹</span>
+        <span class="price-amount" id="proPrice">299</span>
+        <span class="price-per" id="proPer">/month</span>
+      </div>
+      <div class="plan-desc">Everything your business needs to grow faster.</div>
+      <a href="#" class="plan-btn plan-btn-pro">Start Pro — ₹<span id="proBtnPrice">299</span>/mo →</a>
+      <div class="features-label">Everything included</div>
+      <ul class="feature-list">
+        <li class="feature-item"><span class="fi-icon fi-yes">✓</span> <span>Unified messaging</span></li>
+        <li class="feature-item"><span class="fi-icon fi-yes">✓</span> <span>Instant replies</span></li>
+        <li class="feature-item"><span class="fi-icon fi-yes">✓</span> <span>Secure &amp; private chats</span></li>
+        <li class="feature-item"><span class="fi-icon fi-yes">✓</span> <span>Cross-platform access</span></li>
+        <li class="feature-item"><span class="fi-icon fi-yes">✓</span> <span>Unlimited team members</span></li>
+        <li class="feature-item"><span class="fi-icon fi-yes">✓</span> <span>AI-powered support</span></li>
+        <li class="feature-item"><span class="fi-icon fi-yes">✓</span> <span>Analytics &amp; insights</span></li>
+        <li class="feature-item"><span class="fi-icon fi-yes">✓</span> <span>Built for businesses tools</span></li>
+        <li class="feature-item"><span class="fi-icon fi-yes">✓</span> <span>Priority support 24/7</span></li>
+      </ul>
+    </div>
+
+  </div>
+
+
+
+  <!-- COMPARISON TABLE -->
+  <div class="compare-section">
+    <div class="section-label">Free vs Pro comparison</div>
+    <h2 class="section-title">Free vs Pro</h2>
+    <p class="section-sub">See exactly what you unlock when you upgrade</p>
+
+    <div class="compare-outer">
+      <!-- ambient gold glow -->
+      <div class="compare-glow"></div>
+
+      <div class="compare-wrap">
+        <!-- HEADER ROW -->
+        <div class="ct-header">
+          <div class="ct-col-feature">Feature</div>
+          <div class="ct-col-other">
+            <div class="ct-head-label">Free Plan</div>
+          </div>
+          <div class="ct-col-biz">
+            <div class="ct-biz-top">
+              <span class="ct-biz-logo">
+                <svg width="20" height="20" viewBox="0 0 28 28" fill="none"><circle cx="14" cy="14" r="14" fill="#F5A623"/><text x="14" y="19" text-anchor="middle" font-family="Arial" font-size="13" font-weight="700" fill="#1a0a00">B</text></svg>
+              </span>
+              <span class="ct-biz-name">BizChat</span>
+            </div>
+            <div class="ct-biz-sub">Pro Plan</div>
+          </div>
+        </div>
+
+        <!-- ROWS -->
+        <div class="ct-body">
+
+          <div class="ct-row">
+            <div class="ct-col-feature">
+              <span>Unified messaging</span>
+            </div>
+            <div class="ct-col-other"><span class="badge-yes">✓</span></div>
+            <div class="ct-col-biz"><span class="badge-gold">✓</span></div>
+          </div>
+
+          <div class="ct-row">
+            <div class="ct-col-feature">
+              <span>Instant replies</span>
+            </div>
+            <div class="ct-col-other"><span class="badge-yes">✓</span></div>
+            <div class="ct-col-biz"><span class="badge-gold">✓</span></div>
+          </div>
+
+          <div class="ct-row">
+            <div class="ct-col-feature">
+              <span>AI-powered support</span>
+            </div>
+            <div class="ct-col-other"><span class="badge-no">✕</span></div>
+            <div class="ct-col-biz"><span class="badge-gold">✓</span></div>
+          </div>
+
+          <div class="ct-row">
+            <div class="ct-col-feature">
+              <span>Secure &amp; private</span>
+            </div>
+            <div class="ct-col-other"><span class="badge-yes">✓</span></div>
+            <div class="ct-col-biz"><span class="badge-gold">✓</span></div>
+          </div>
+
+          <div class="ct-row">
+            <div class="ct-col-feature">
+              <span>Analytics &amp; insights</span>
+            </div>
+            <div class="ct-col-other"><span class="badge-no">✕</span></div>
+            <div class="ct-col-biz"><span class="badge-gold">✓</span></div>
+          </div>
+
+          <div class="ct-row">
+            <div class="ct-col-feature">
+              <span>Cross-platform</span>
+            </div>
+            <div class="ct-col-other"><span class="badge-yes">✓</span></div>
+            <div class="ct-col-biz"><span class="badge-gold">✓</span></div>
+          </div>
+
+          <div class="ct-row">
+            <div class="ct-col-feature">
+              <span>Built for businesses</span>
+            </div>
+            <div class="ct-col-other"><span class="badge-no">✕</span></div>
+            <div class="ct-col-biz"><span class="badge-gold">✓</span></div>
+          </div>
+
+          <div class="ct-row ct-row-last">
+            <div class="ct-col-feature">
+              <span>Priority 24/7 support</span>
+            </div>
+            <div class="ct-col-other"><span class="badge-no">✕</span></div>
+            <div class="ct-col-biz"><span class="badge-gold">✓</span></div>
+          </div>
+
+        </div>
+
+        <!-- FOOTER CTA inside table -->
+        <div class="ct-footer">
+          <div class="ct-col-feature" style="color:rgba(255,255,255,0.3); font-size:13px;">Choose your plan →</div>
+          <div class="ct-col-other">
+            <span style="font-size:13px; color:rgba(255,255,255,0.3); font-weight:500;">Free forever</span>
+          </div>
+          <div class="ct-col-biz">
+            <a href="#" class="ct-upgrade-btn">Get Pro — ₹299/mo</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <div class="faq-section">
+    <div class="section-label">Got questions?</div>
+    <h2 class="section-title" style="margin-bottom:8px;">Frequently asked</h2>
+    <p class="section-sub">Everything you need to know</p>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">Can I cancel anytime? <span class="faq-arrow">+</span></div>
+      <div class="faq-a">Yes, absolutely. You can cancel your Pro subscription at any time with no questions asked. Your plan stays active until the end of your billing cycle.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">Is the Free plan really free forever? <span class="faq-arrow">+</span></div>
+      <div class="faq-a">Yes! The Free plan is completely free with no time limit. You only upgrade when you need more power for your business.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">What payment methods are accepted? <span class="faq-arrow">+</span></div>
+      <div class="faq-a">We accept UPI, debit/credit cards, net banking, and all major Indian payment methods. Payments are processed securely.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">Can I switch from Free to Pro later? <span class="faq-arrow">+</span></div>
+      <div class="faq-a">Of course! You can upgrade from Free to Pro at any time. Your data and chats are fully preserved when you switch.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">Do you offer refunds? <span class="faq-arrow">+</span></div>
+      <div class="faq-a">We offer a 7-day money-back guarantee on Pro plans. If you're not satisfied, contact us and we'll issue a full refund, no questions asked.</div>
+    </div>
+  </div>
+
+  <!-- BOTTOM CTA -->
+  <div class="cta-bottom">
+    <h2>Start using BizChat today</h2>
+    <p>Join 10,000+ Indian businesses growing faster with AI-powered messaging.</p>
+    <div class="cta-btns">
+      <a href="#" class="btn-hero btn-hero-primary">Start for free — no card needed</a>
+      <a href="#" class="btn-hero btn-hero-secondary">Talk to sales</a>
+    </div>
+    <div class="cta-trust">
+      <span>✓ No credit card required</span>
+      <span class="cta-trust-dot">·</span>
+      <span>✓ 7-day money-back guarantee</span>
+      <span class="cta-trust-dot">·</span>
+      <span>✓ Cancel anytime</span>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2024 BizChat. All rights reserved. &nbsp;·&nbsp; Built for businesses in India 🇮🇳 &nbsp;·&nbsp;
+    <a href="#">Privacy Policy</a> &nbsp;·&nbsp; <a href="#">Terms of Service</a>
+  </p>
+</footer>
+
+<script>
+  // Toggle monthly/yearly
+  function setToggle(mode) {
+    const monthlyBtn = document.getElementById('monthlyBtn');
+    const yearlyBtn = document.getElementById('yearlyBtn');
+    const proPrice = document.getElementById('proPrice');
+    const proPer = document.getElementById('proPer');
+    const proBtnPrice = document.getElementById('proBtnPrice');
+
+    if (mode === 'monthly') {
+      monthlyBtn.classList.add('active');
+      yearlyBtn.classList.remove('active');
+      proPrice.textContent = '299';
+      proPer.textContent = '/month';
+      proBtnPrice.textContent = '299';
+    } else {
+      yearlyBtn.classList.add('active');
+      monthlyBtn.classList.remove('active');
+      proPrice.textContent = '239';
+      proPer.textContent = '/month, billed yearly';
+      proBtnPrice.textContent = '239';
+    }
+  }
+
+  // FAQ accordion
+  function toggleFaq(el) {
+    const isOpen = el.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(f => f.classList.remove('open'));
+    if (!isOpen) el.classList.add('open');
+  }
+</script>
+
+</body>
+</html>
